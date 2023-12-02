@@ -330,7 +330,7 @@ class __Class(_pre.Pregex):
             to `[\w]` or not.
         '''
 
-        word_set = {'a-z', 'A-Z', '0-9', '_'}
+        word_set = {'a-z', 'а-яё', 'A-Z', 'А-ЯЁ', '0-9', '_'}
         digit_set = {'0-9'}
         whitespace_set = {' ', '\t-\r'}
         if classes.issuperset(word_set) and simplify_word:
@@ -660,8 +660,8 @@ class __Class(_pre.Pregex):
         :param str classes: One or more string character class patterns.
         '''
         range_pattern = \
-            r"(?:\\(?:\[|\]|\^|\$|\-|\/|[a-z]|\\)|[^\[\]\^\$\-\/\\])" + \
-            r"-(?:\\(?:\[|\]|\^|\$|\-|\/|[a-z]|\\)|[^\[\]\^\$\-\/\\])"
+            r"(?:\\(?:\[|\]|\^|\$|\-|\/|[a-zа-яё]|\\)|[^\[\]\^\$\-\/\\])" + \
+            r"-(?:\\(?:\[|\]|\^|\$|\-|\/|[a-zа-яё]|\\)|[^\[\]\^\$\-\/\\])"
         ranges = set(_re.findall(range_pattern, classes))
         classes = _re.sub(pattern=range_pattern, repl="", string=classes)
         return (ranges, set(_re.findall(r"\\?.", classes, flags=_re.DOTALL)))
@@ -744,7 +744,7 @@ class AnyLetter(__Class):
         '''
         Matches any character from the Latin alphabet.
         '''
-        super().__init__('[a-zA-Z]', is_negated=False)
+        super().__init__('[a-zA-Zа-яА-ЯЁё]', is_negated=False)
 
 
 class AnyButLetter(__Class):
@@ -756,7 +756,7 @@ class AnyButLetter(__Class):
         '''
         Matches any character except for characters in the Latin alphabet.
         '''
-        super().__init__('[^a-zA-Z]', is_negated=True)
+        super().__init__('[^a-zA-Zа-яА-ЯЁ-ё]', is_negated=True)
 
 
 class AnyLowercaseLetter(__Class):
@@ -768,7 +768,7 @@ class AnyLowercaseLetter(__Class):
         '''
         Matches any lowercase character from the Latin alphabet.
         '''
-        super().__init__('[a-z]', is_negated=False)
+        super().__init__('[a-zа-яё]', is_negated=False)
 
 
 class AnyButLowercaseLetter(__Class):
@@ -780,7 +780,7 @@ class AnyButLowercaseLetter(__Class):
         '''
         Matches any character except for lowercase characters in the Latin alphabet.
         '''
-        super().__init__('[^a-z]', is_negated=True)
+        super().__init__('[^a-zа-яё]', is_negated=True)
 
 
 class AnyUppercaseLetter(__Class):
@@ -792,19 +792,7 @@ class AnyUppercaseLetter(__Class):
         '''
         Matches any uppercase character from the Latin alphabet.
         '''
-        super().__init__('[A-Z]', is_negated=False)
-
-
-class AnyRusCyrillicUppercaseLetter(__Class):
-    '''
-    Matches any uppercase character from the Latin alphabet.
-    '''
-
-    def __init__(self) -> 'AnyRusCyrillicUppercaseLetter':
-        '''
-        Matches any uppercase character from the Latin alphabet.
-        '''
-        super().__init__('[А-ЯЁ]', is_negated=False)
+        super().__init__('[A-ZА-ЯЁ]', is_negated=False)
 
 
 class AnyButUppercaseLetter(__Class):
@@ -816,7 +804,7 @@ class AnyButUppercaseLetter(__Class):
         '''
         Matches any character except for uppercase characters in the Latin alphabet.
         '''
-        super().__init__('[^A-Z]', is_negated=True)
+        super().__init__('[^A-ZА-ЯЁ]', is_negated=True)
 
 
 class AnyDigit(__Class):
@@ -866,7 +854,7 @@ class AnyWordChar(__Class):
             a regular character class from an instance of this class for which \
             parameter ``is_global`` has been set to ``True``.
         '''
-        super().__init__('[a-zA-Z0-9_]', is_negated=False, simplify_word=is_global)
+        super().__init__('[a-zа-яёA-ZА-ЯЁ0-9_]', is_negated=False, simplify_word=is_global)
         self.__is_global = is_global
 
     def _is_global(self) -> bool:
@@ -909,7 +897,7 @@ class AnyButWordChar(__Class):
             a negated character class from an instance of this class for which \
             parameter ``is_global`` has been set to ``True``.
         '''
-        super().__init__('[^a-zA-Z0-9_]', is_negated=True, simplify_word=is_global)
+        super().__init__('[^a-zа-яёA-ZА-ЯЁ0-9_]', is_negated=True, simplify_word=is_global)
         self.__is_global = is_global
 
     def _is_global(self) -> bool:
@@ -1219,19 +1207,6 @@ class AnyCyrillicLetter(__Class):
         Matches any character from the Cyrillic alphabet.
         '''
         super().__init__('[Ѐ-ӿ]', is_negated=False)
-
-
-class AnyRusCyrillicLetter(__Class):
-
-    '''
-        Matches any character from the Cyrillic alphabet.
-        '''
-
-    def __init__(self) -> 'AnyRusCyrillicLetter':
-        '''
-        Matches any character from the Cyrillic alphabet.
-        '''
-        super().__init__('[а-яА-ЯЁё]', is_negated=False)
 
 
 class AnyButCyrillicLetter(__Class):
