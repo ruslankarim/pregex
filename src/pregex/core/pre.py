@@ -915,7 +915,7 @@ class Pregex():
             if not isinstance(name, str):
                 message = "Provided argument \"name\" is not a string."
                 raise _ex.InvalidArgumentTypeException(message)
-            if _re.fullmatch("[A-Za-z_]\w*", name) is None:
+            if _re.fullmatch("[A-ZА-ЯЁa-zа-яё_]\w*", name) is None:
                 raise _ex.InvalidCapturingGroupNameException(name)
         if self.__type == _Type.Empty:
             return self
