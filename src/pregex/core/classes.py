@@ -198,7 +198,7 @@ class __Class(_pre.Pregex):
     '''
     A set containing characters that must be escaped when used within a class.
     '''
-    _to_escape = ('\\', '^', '[', ']', '-', '/')
+    _to_escape = ('\\', '^', '[', ']', '-', '/', '"')
 
     def __init__(self, pattern: str, is_negated: bool, simplify_word: bool = False) -> '__Class':
         '''
